@@ -1,8 +1,8 @@
 window.onload = async function () {
   // === ★ご自身のURLに書き換えてください ===
-  const NOTION_URL = "https://www.notion.so/あなたのNotionのURL";
+  const NOTION_URL = "https://glowing-gastonia-33b.notion.site/36d4e26618db802dbd4ed0d7082907b4?source=copy_link";
   const CHECK_LIFF_URL = "https://liff.line.me/2009827198-LyTrVRFv"; // シフト確認 / 変更のLIFF URL
-  const SUBMIT_LIFF_URL = "https://liff.line.me/あなたのシフト一括提出LIFF_URL";
+  const SUBMIT_LIFF_URL = "https://liff.line.me/2009827198-MNhumUto";
 
   try {
     // 1. LIFFの初期化（★このメニュー画面用に新しく作ったLIFF IDを指定します）
