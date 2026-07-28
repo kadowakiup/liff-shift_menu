@@ -1,6 +1,6 @@
 window.onload = async function () {
   // === ★ご自身のURLに書き換えてください ===
-  const NOTION_URL = "https://glowing-gastonia-33b.notion.site/36d4e26618db802dbd4ed0d7082907b4?source=copy_link";
+  const NOTION_URL = "https://drive.google.com/file/d/1oisBWGDe7W8rKV02hdVlx90b-aE9whfa/view?usp=sharing";
   const CHECK_LIFF_URL = "https://liff.line.me/2009827198-LyTrVRFv"; // シフト確認 / 変更のLIFF URL
   const SUBMIT_LIFF_URL = "https://liff.line.me/2009827198-MNhumUto";
 
