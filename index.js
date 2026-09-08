@@ -69,6 +69,7 @@ async function fetchLarkData(userId, apiUrl) {
 
     if (nqcId || nqcPw) {
       contentElement.style.color = "#333";
+      // ↓ 下部のテキストを削除し、スッキリさせました
       contentElement.innerHTML = `
         <div style="background: #fff; padding: 12px; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 8px;">
           <p style="margin: 0 0 8px 0; font-size: 15px;">
@@ -80,7 +81,6 @@ async function fetchLarkData(userId, apiUrl) {
             <strong style="user-select: all; letter-spacing: 1px;">${nqcPw || "未登録"}</strong>
           </p>
         </div>
-        <p style="font-size: 12px; color: #888; margin: 0;">※文字を長押しするとコピーできます</p>
       `;
     } else {
       contentElement.innerHTML = `
