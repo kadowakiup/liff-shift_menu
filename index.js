@@ -59,21 +59,13 @@ async function fetchLarkData(userId, apiUrl) {
       throw new Error(`HTTP Error: ${response.status}`);
     }
 
+    // data には画像の生データがそのまま入っています
     const data = await response.json();
 
-    // 対策：もし data.body が「文字列」として届いていた場合、JSONオブジェクトに変換する
-    let responseBody = data.body;
-    if (typeof responseBody === "string") {
-      try {
-        responseBody = JSON.parse(responseBody);
-      } catch (e) {
-        console.warn("bodyのJSONパースに失敗しました");
-      }
-    }
-
-    // ご提示いただいた構造に合わせて取得
-    const nqcId = responseBody?.["Neo Quick Call"]?.value?.[0]?.text;
-    const nqcPw = responseBody?.["Neo Quick Call PW"]?.[0]?.text;
+    // ★ 修正ポイント：
+    // data.body ではなく、data に直接アクセスして値を取得します
+    const nqcId = data?.["Neo Quick Call"]?.value?.[0]?.text;
+    const nqcPw = data?.["Neo Quick Call PW"]?.[0]?.text;
 
     if (nqcId || nqcPw) {
       contentElement.style.color = "#333";
@@ -91,7 +83,6 @@ async function fetchLarkData(userId, apiUrl) {
         <p style="font-size: 12px; color: #888; margin: 0;">※文字を長押しするとコピーできます</p>
       `;
     } else {
-      // ★ ここがポイント：値が取れなかった場合、LIFFが受け取った実際の生データを画面に表示します
       contentElement.innerHTML = `
         <p style="color: #d9534f; font-size: 13px; font-weight: bold; margin-bottom: 4px;">データ構造が一致しませんでした</p>
         <p style="font-size: 11px; margin-bottom: 8px;">以下の生データを確認してください：</p>
