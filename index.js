@@ -48,7 +48,7 @@ async function fetchLarkData(userId, apiUrl) {
   const contentElement = document.getElementById("lark-data-content");
 
   try {
-    // GETリクエストでCloudflareにリクエストを送信
+    // GETリクエストでCloudflareに送信（※Cloudflare WorkerのURLをapiUrlに指定している前提です）
     const response = await fetch(`${apiUrl}?userId=${userId}`, {
       method: "GET",
       headers: {
@@ -60,16 +60,33 @@ async function fetchLarkData(userId, apiUrl) {
       throw new Error(`HTTP Error: ${response.status}`);
     }
 
-    // Cloudflareから返ってきたJSONデータを取得
+    // Anycrossから返ってきたJSONデータを取得
     const data = await response.json();
 
-    // データをHTMLに表示する (※データ構造に合わせてプロパティ名を書き換えてください)
-    // 例: { "status": "ok", "shiftInfo": "明日のシフトは10:00〜19:00です" }
-    if (data.shiftInfo) {
+    // ★ 構造に合わせてNeo Quick CallのIDとPWを抽出（データが無い場合のエラーを防ぐため ?. を使用）
+    const nqcId = data.body?.["Neo Quick Call"]?.value?.[0]?.text;
+    const nqcPw = data.body?.["Neo Quick Call PW"]?.[0]?.text;
+
+    if (nqcId || nqcPw) {
       contentElement.style.color = "#333";
-      contentElement.innerHTML = `<p>${data.shiftInfo}</p>`;
+      
+      // IDとパスワードをHTMLとして組み立てて表示
+      // user-select: all; をつけると、スマホで長押しした時に一発で全選択されてコピーしやすくなります
+      contentElement.innerHTML = `
+        <div style="background: #fff; padding: 12px; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 8px;">
+          <p style="margin: 0 0 8px 0; font-size: 15px;">
+            <span style="color: #666; font-size: 12px; display: block;">ログインID</span>
+            <strong style="user-select: all; letter-spacing: 1px;">${nqcId || "未登録"}</strong>
+          </p>
+          <p style="margin: 0; font-size: 15px;">
+            <span style="color: #666; font-size: 12px; display: block;">パスワード</span>
+            <strong style="user-select: all; letter-spacing: 1px;">${nqcPw || "未登録"}</strong>
+          </p>
+        </div>
+        <p style="font-size: 12px; color: #888; margin: 0;">※文字を長押しするとコピーできます</p>
+      `;
     } else {
-      contentElement.innerHTML = `<p>表示する情報がありません。</p>`;
+      contentElement.innerHTML = `<p>Neo Quick Callのログイン情報が見つかりませんでした。</p>`;
     }
 
   } catch (error) {
