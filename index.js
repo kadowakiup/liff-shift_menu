@@ -48,7 +48,6 @@ async function fetchLarkData(userId, apiUrl) {
   const contentElement = document.getElementById("lark-data-content");
 
   try {
-    // GETリクエストでCloudflareに送信（※Cloudflare WorkerのURLをapiUrlに指定している前提です）
     const response = await fetch(`${apiUrl}?userId=${userId}`, {
       method: "GET",
       headers: {
@@ -60,18 +59,24 @@ async function fetchLarkData(userId, apiUrl) {
       throw new Error(`HTTP Error: ${response.status}`);
     }
 
-    // Anycrossから返ってきたJSONデータを取得
     const data = await response.json();
 
-    // ★ 構造に合わせてNeo Quick CallのIDとPWを抽出（データが無い場合のエラーを防ぐため ?. を使用）
-    const nqcId = data.body?.["Neo Quick Call"]?.value?.[0]?.text;
-    const nqcPw = data.body?.["Neo Quick Call PW"]?.[0]?.text;
+    // 対策：もし data.body が「文字列」として届いていた場合、JSONオブジェクトに変換する
+    let responseBody = data.body;
+    if (typeof responseBody === "string") {
+      try {
+        responseBody = JSON.parse(responseBody);
+      } catch (e) {
+        console.warn("bodyのJSONパースに失敗しました");
+      }
+    }
+
+    // ご提示いただいた構造に合わせて取得
+    const nqcId = responseBody?.["Neo Quick Call"]?.value?.[0]?.text;
+    const nqcPw = responseBody?.["Neo Quick Call PW"]?.[0]?.text;
 
     if (nqcId || nqcPw) {
       contentElement.style.color = "#333";
-      
-      // IDとパスワードをHTMLとして組み立てて表示
-      // user-select: all; をつけると、スマホで長押しした時に一発で全選択されてコピーしやすくなります
       contentElement.innerHTML = `
         <div style="background: #fff; padding: 12px; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 8px;">
           <p style="margin: 0 0 8px 0; font-size: 15px;">
@@ -86,7 +91,14 @@ async function fetchLarkData(userId, apiUrl) {
         <p style="font-size: 12px; color: #888; margin: 0;">※文字を長押しするとコピーできます</p>
       `;
     } else {
-      contentElement.innerHTML = `<p>Neo Quick Callのログイン情報が見つかりませんでした。</p>`;
+      // ★ ここがポイント：値が取れなかった場合、LIFFが受け取った実際の生データを画面に表示します
+      contentElement.innerHTML = `
+        <p style="color: #d9534f; font-size: 13px; font-weight: bold; margin-bottom: 4px;">データ構造が一致しませんでした</p>
+        <p style="font-size: 11px; margin-bottom: 8px;">以下の生データを確認してください：</p>
+        <div style="background:#eee; padding:8px; font-size:11px; word-break:break-all; max-height:200px; overflow-y:auto; border-radius:4px;">
+          ${JSON.stringify(data)}
+        </div>
+      `;
     }
 
   } catch (error) {
