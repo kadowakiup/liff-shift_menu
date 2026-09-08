@@ -68,18 +68,18 @@ async function fetchLarkData(userId, apiUrl) {
     const nqcPw = data?.["Neo Quick Call PW"]?.[0]?.text;
 
     if (nqcId || nqcPw) {
-      contentElement.style.color = "#333";
-      // ↓ 下部のテキストを削除し、スッキリさせました
+      // 読み込み中のセンタリングを解除
+      contentElement.style.textAlign = "left"; 
+      
+      // シンプルな横並びのリスト風デザイン
       contentElement.innerHTML = `
-        <div style="background: #fff; padding: 12px; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 8px;">
-          <p style="margin: 0 0 8px 0; font-size: 15px;">
-            <span style="color: #666; font-size: 12px; display: block;">ログインID</span>
-            <strong style="user-select: all; letter-spacing: 1px;">${nqcId || "未登録"}</strong>
-          </p>
-          <p style="margin: 0; font-size: 15px;">
-            <span style="color: #666; font-size: 12px; display: block;">パスワード</span>
-            <strong style="user-select: all; letter-spacing: 1px;">${nqcPw || "未登録"}</strong>
-          </p>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid #f0f0f0;">
+          <span style="font-size: 12px; color: #888; letter-spacing: 0.5px;">ID</span>
+          <strong style="font-size: 16px; color: #111; user-select: all; letter-spacing: 0.5px;">${nqcId || "未登録"}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px;">
+          <span style="font-size: 12px; color: #888; letter-spacing: 0.5px;">Password</span>
+          <strong style="font-size: 16px; color: #111; user-select: all; letter-spacing: 0.5px;">${nqcPw || "未登録"}</strong>
         </div>
       `;
     } else {
