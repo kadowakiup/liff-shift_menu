@@ -65,7 +65,7 @@ async function fetchLarkData(userId, apiUrl) {
     // ★ 修正ポイント：
     // data.body ではなく、data に直接アクセスして値を取得します
     const nqcId = data?.["Neo Quick Call"]?.value?.[0]?.text;
-    const nqcPw = data?.["Neo Quick Call PW"]?.[0]?.text;
+    const nqcPw = data?.["Neo Quick Call PW"]?.value?.[0]?.text;
 
     if (nqcId || nqcPw) {
       // 読み込み中のセンタリングを解除
