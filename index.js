@@ -3,9 +3,6 @@ window.onload = async function () {
   const NOTION_URL = "https://drive.google.com/file/d/1oisBWGDe7W8rKV02hdVlx90b-aE9whfa/view?usp=sharing";
   const CHECK_LIFF_URL = "https://liff.line.me/2009827198-LyTrVRFv"; 
   const SUBMIT_LIFF_URL = "https://liff.line.me/2009827198-MNhumUto";
-  
-  // ★CloudflareのAPIエンドポイント（WorkerのURL等）を指定してください
-  const CLOUDFLARE_API_URL = "https://your-worker.your-domain.workers.dev/api/lark-info";
 
   try {
     // 1. LIFFの初期化
