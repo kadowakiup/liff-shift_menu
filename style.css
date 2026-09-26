@@ -30,7 +30,10 @@ h2 {
 }
 
 .menu-btn {
-  display: block;
+  /* display: block; からFlexboxに変更し、中身を中央揃えにする */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   padding: 16px;
   margin-bottom: 16px;
@@ -44,6 +47,13 @@ h2 {
 
 .menu-btn:active {
   transform: scale(0.96); /* 押した時に少し凹むアニメーション */
+}
+
+/* 追加: アイコン画像のスタイル */
+.btn-icon {
+  width: 20px; /* アイコンの大きさに合わせて数値を調整してください */
+  height: 20px;
+  margin-right: 8px; /* 文字との間隔 */
 }
 
 .notion-btn {
