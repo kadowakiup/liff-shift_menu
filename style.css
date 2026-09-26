@@ -53,7 +53,7 @@ h2 {
 .btn-icon {
   width: 20px; /* アイコンの大きさに合わせて数値を調整してください */
   height: 20px;
-  margin-right: 8px; /* 文字との間隔 */
+  margin: 2px 10px 0 0; /* 文字との間隔 */
 }
 
 .notion-btn {
